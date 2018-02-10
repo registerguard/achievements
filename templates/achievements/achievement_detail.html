@@ -1,0 +1,87 @@
+{% extends "dox/bulldog_story.html" %}
+{% load thumbnail_tags %}
+{% load markup %}
+
+{% block head_title %}Achievement | {{ object.date|date:"l, N j, Y" }} | {% endblock %}
+
+{% block content %}
+<div id="primary" class="w_col w_C640 w_D980">
+<!-- ##### BEGIN PRIMARY COLUMN ##### -->
+	
+	{% if object.image_set.all %}
+		{% with object.image_set.all as all_achievement_images %}
+			{% for achievement_image in all_achievement_images %}
+			<hgroup>
+				
+				<div class="streamer alt3">
+				
+					<h1><a href="#">Multimedia</a></h1>
+					
+					<h2 id="photo"><a href="#">Photo</a></h2>
+				
+				</div><!-- /.streamer -->
+			
+			</hgroup>
+			
+			<figure>
+				
+				<img src="{{ MEDIA_URL }}{% thumbnail achievement_image.image 980 100000 %}">
+				
+				<figcaption>
+					
+					<div class="fix">
+						
+						<p class="caption" style="text-align: right;">{{ achievement_image.credit }}</p>
+						
+					</div>
+					
+				</figcaption>
+				
+			</figure>
+			
+			{% endfor %}
+		{% endwith %}
+	{% endif %}
+	
+	{% if object %}
+		<h2>{{ object.first_name_middle }} {{ object.last_name }}
+		</h2>
+		
+		{% block pubDate %}
+		<p class="pubDate">{{ object.date|date:"l, N j, Y" }}</p>
+		{% endblock pubDate %}
+		
+		<div class="horizRule"></div>
+		<hr>
+		
+		<div id="story">
+			{{ object.long_description|markdown }}
+			
+		</div> <!-- /#story -->
+		
+		{% block pager %}
+		<div class="pager">
+			<div class="end clear">
+				{% with object.get_previous_by_date as the_previous %}
+				{% if the_previous.get_absolute_url %}
+					<p class="end01">
+						Previous: <a href="{{ the_previous.get_absolute_url }}">{{ the_previous.first_name_middle }} {{ the_previous.last_name }}</a>
+					</p>
+				{% endif %}
+				{% endwith %}
+				{% with object.get_next_by_date as the_next %}
+				{% if the_next.get_absolute_url %}
+					<p class="end02">
+						Next: <a href="{{ the_next.get_absolute_url }}">{{ the_next.first_name_middle }} {{ the_next.last_name }}</a>
+					</p>
+				{% endif %}
+				{% endwith %}
+			</div>
+		</div>
+		{% endblock %}
+		
+	{% endif %}
+	
+<!-- ##### END PRIMARY COLUMN ##### -->
+</div> <!-- /#primary /.c630 fl mr10-->
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "dox/bulldog.html" %}
+{% load thumbnail_tags %}
+
+{% block head_title %}Hometown news{% endblock %}
+
+{% block content %}
+<div id="primary" class="c630 fl mr10">
+	
+	<h3>Hometown news</h3>
+	
+	<div class="rack s">
+	
+	<p>A collection of reader-submitted post-secondary achievements with a Lane County connection. Submit yours <a href="">here</a>.</p>
+	
+	<h4>Achievements</h2>
+	
+	{% for object in object_list %}
+		
+		<div class="lede">{{ object.date|date:"F j, Y" }}</div>
+		
+		{% if object.image_set.all %}
+			
+			<a href="{% url achievement_detail object.id %}">
+				
+				<img src="{{ MEDIA_URL }}{% thumbnail object.image_set.all.0.image 100 100 %}" alt="{{ object.image_set.all.0.alt_text }}">
+				
+			</a>
+			
+		{% endif %}
+		
+		<p><strong><a href="{% url achievement_detail object.id %}">{{ object.first_name_middle }} {{ object.last_name }}</a></strong> of <strong>{{ object.town }}</strong>, {{ object.short_description }}.</p>
+		
+	{% endfor %}
+	
+	</div> <!-- /.rack -->
+	
+</div> <!-- /#primary /.c630 fl mr10-->
+{% endblock %}
